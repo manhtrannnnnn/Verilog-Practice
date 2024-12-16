@@ -45,26 +45,3 @@ module fulladder_nbit #(
     assign overflow = cout[N-1];
     
 endmodule
-
-//--------------------------------Gate Level single bit Adder-------------------------------//
-
-module gate_adder (
-    input a, b, cin,
-    output cout, sum
-);
-    wire xor1;
-    wire and1, and2;
-    wire or1;
-
-    xor out1(sum,a,b);
-    xor out2(xor2,xor1,cin);
-    and out3(and1,cin,xor1);
-    and out4(and2,a,b);
-    or out5(cout,and1,and2);
-endmodule
-
-
-
-
-
-
