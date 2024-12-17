@@ -185,7 +185,7 @@ module fsm(
 );
     // Set state for FSM
     localparam Init = 6'b000001,
-                 = 6'b000010,
+               S1 = 6'b000010,
                S10 = 6'b000100,
                S101 = 6'b001000,
                S1011 = 6'b010000,
