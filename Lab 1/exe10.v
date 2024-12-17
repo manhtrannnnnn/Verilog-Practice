@@ -183,8 +183,9 @@ module fsm(
     input data_in,
     output valid
 );
+    // Set state for FSM
     localparam Init = 6'b000001,
-               S1 = 6'b000010,
+                 = 6'b000010,
                S10 = 6'b000100,
                S101 = 6'b001000,
                S1011 = 6'b010000,
@@ -193,6 +194,7 @@ module fsm(
     reg [5:0] currentState, nextState;
 
 
+    // Flip-flop
     always @(posedge clk) begin
         if(!rst_n) begin
             currentState <= Init;
@@ -202,7 +204,7 @@ module fsm(
         end
     end
 
-    //chose 
+    //Select Next State
 
     always @(*) begin
         case(currentState) 
