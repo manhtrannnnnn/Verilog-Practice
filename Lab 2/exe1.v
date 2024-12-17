@@ -1,5 +1,5 @@
 //--------------------------------- 2:4 using gate level modeling----------------------------------------------//
-module decode2to4(
+module decoder2to4(
     input a, b,
     input en,
     output out0, out1, out2, out3 
