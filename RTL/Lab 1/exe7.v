@@ -12,7 +12,6 @@ module xnor_logic(
     input in1, in2,
     output out
 );
-    wire [1:0] tmp;
     
     // XNOR Truth table: 2'b00 -> 1 | 2'b01 -> 0 | 2'b10 -> 0 | 2'b11 -> 1 
     mux4to1 mux(
