@@ -48,7 +48,7 @@ module d_flipflop #(
 endmodule
 
 
-//-------------------------------------------- Verify Dflipflop using D Latch --------------------------------------------//
+//-------------------------------------------- Verify D-flipflop using D Latch --------------------------------------------//
 module d_flipflop_tb();
   
   	parameter Width = 4;
