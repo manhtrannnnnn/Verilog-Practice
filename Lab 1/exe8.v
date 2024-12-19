@@ -9,7 +9,7 @@ module dataflow_adder(
 endmodule
 
 //--------------------------------n-bit full adder---------------------------------------//
-
+// Same as Exercise 1
 module fulladder_nbit #(
     parameter N = 4
 )(

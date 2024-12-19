@@ -7,7 +7,7 @@ module mux2to1 (
     wire out1, out2;
     wire not_select;
 
-    // Gate level
+    // Gate level || out = a & sel + b & (~sel);
     not not1(not_select, select);
     and a1(out1, a,select);
     and a2(out2,b,not_select);

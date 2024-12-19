@@ -7,8 +7,6 @@ module decoder2to4 (
     wire [1:0] tmp;
 
     assign tmp = {in2, in1};
-
-    // Use `en` to control the output
     assign data_out = ~en ? 4'b0000 : 
                       (tmp == 2'b00) ? 4'b0001 :
                       (tmp == 2'b01) ? 4'b0010 :

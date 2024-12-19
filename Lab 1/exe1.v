@@ -52,15 +52,17 @@ module gate_adder (
     input a, b, cin,
     output cout, sum
 );
-    wire xor1;
-    wire and1, and2;
-    wire or1;
+    // Sum = a ^ b ^ cin
+    xor x1(sum, a, b, cin);
 
-    xor out1(sum,a,b);
-    xor out2(xor2,xor1,cin);
-    and out3(and1,cin,xor1);
-    and out4(and2,a,b);
-    or out5(cout,and1,and2);
+    // cout = (a & b) | (b & cin) | (cin & a) 
+    wire out1, out2, out3;
+    and a1(out1, a, b);
+    and a2(out2, b, cin);
+    and a3(out3, a, cin);
+    or  o1(cout, out1, out2, out3);
+
+    
 endmodule
 
 

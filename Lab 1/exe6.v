@@ -3,7 +3,7 @@ module nand_gate(
     input in1, in2,
     output out
 );
-    assign out = (in1 && in2) ? 0 : 1; 
+    assign out = (in1 && in2) ? 0 : 1; // in1 == 1 and in2 == 1 => out = 0
 endmodule
 
 //-------------------------------Xor gate-------------------------------//
@@ -46,7 +46,7 @@ module decoder2to4 (
 
 
     assign tmp = {in1, in2};
-    assign data_out = ~en ? 4'b0000 : 
+    assign data_out = (~en) ? 4'b0000 : 
                       (tmp == 2'b00) ? 4'b0001 :
                       (tmp == 2'b01) ? 4'b0010 :
                       (tmp == 2'b10) ? 4'b0100 : 4'b1000;

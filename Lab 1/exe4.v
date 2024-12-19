@@ -6,9 +6,8 @@ module T_flipflop (
     input wire async_clear, 
     output reg Q         
 );
-    // Internal wire for the D latch logic
-    wire D;
 
+    wire D;
     assign D = T ^ Q;
 
     // Asynchronous set and clear control
