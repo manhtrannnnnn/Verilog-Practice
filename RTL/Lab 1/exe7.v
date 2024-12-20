@@ -1,7 +1,7 @@
 //------------------------------------------7.Design XNOR Gate using 4:1 Multiplexer------------------------------------------//
 module mux4to1(
     input in0, in1, in2, in3,
-    input sel[1:0],
+    input [1:0] sel,
     output out
 );
     assign out = sel[1] ? (sel[0] ? in3 : in2) : (sel[0] ? in1 : in0);

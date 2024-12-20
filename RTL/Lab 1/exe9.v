@@ -16,7 +16,6 @@ endmodule
 
 module decoder3to8(
     input [2:0] data_in,
-    input en,
     output [7:0] data_out
 );
 
