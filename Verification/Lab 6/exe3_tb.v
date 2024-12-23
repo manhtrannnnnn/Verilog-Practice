@@ -19,20 +19,27 @@ module flowcontrol_tb;
     // Test Stimulus
     initial begin
         $display("----------Test Flow Control----------");
-        data_in = 8'hAB; valid_in = 1'b0; asyn_rst = 0; #15;
-        data_in = 8'hAB; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'h43; valid_in = 1'b0; asyn_rst = 1; #5;
-        data_in = 8'hCD; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'hAD; valid_in = 1'b0; asyn_rst = 1; #5;
-        data_in = 8'h51; valid_in = 1'b1; asyn_rst = 0; #5;
-        data_in = 8'h01; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'hDF; valid_in = 1'b0; asyn_rst = 1; #5;
-        data_in = 8'hF1; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'h19; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'h1B; valid_in = 1'b0; asyn_rst = 1; #5;
-        data_in = 8'hCF; valid_in = 1'b1; asyn_rst = 1; #5;
-        data_in = 8'hFF; valid_in = 1'b0; asyn_rst = 1; #5;
-        data_in = 8'h61; valid_in = 1'b0; asyn_rst = 1; #5;
+        data_in = 8'hAB; valid_in = 1'b0; asyn_rst = 0; #10;
+        data_in = 8'hAB; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'hxxab
+      	// Test inactive valid_in
+        data_in = 8'h43; valid_in = 1'b0; asyn_rst = 1; #10;	
+        data_in = 8'hCD; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'habcd
+      	// Test inactive valid_in
+        data_in = 8'hAD; valid_in = 1'b0; asyn_rst = 1; #10;
+      	// Test asynchronous Reset
+        data_in = 8'h51; valid_in = 1'b1; asyn_rst = 0; #10;	
+        data_in = 8'h01; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'hcd01
+      	// Test inactive valid_in
+        data_in = 8'hDF; valid_in = 1'b0; asyn_rst = 1; #10;	
+        data_in = 8'hF1; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'h01F1
+        data_in = 8'h19; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'hf119
+      	// Test inactive valid_in
+        data_in = 8'h1B; valid_in = 1'b0; asyn_rst = 1; #10;	
+        data_in = 8'hCF; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'h19cf
+      	// Test inactive valid_in
+        data_in = 8'hFF; valid_in = 1'b0; asyn_rst = 1; #10;	
+        data_in = 8'h61; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'hcf61
+      	$finish;
 
     end
 
@@ -52,4 +59,5 @@ module flowcontrol_tb;
         $dumpfile("dump.vcd");
         $dumpvars;
     end
+  
 endmodule
