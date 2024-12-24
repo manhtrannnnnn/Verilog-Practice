@@ -52,7 +52,7 @@ module T_flipflop_tb;
   initial begin
     $monitor("Time: %0t | T: %b, clk: %b, async_set: %b, async_clear: %b | Q: %b", 
              $time, T, clk, async_set, async_clear, Q);
-  endz
+  end
 
   // Generate waveform
   initial begin

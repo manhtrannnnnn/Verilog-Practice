@@ -13,10 +13,14 @@ module nand_gate_tb;
   // Test stimulus
   initial begin
     $display("---- NAND Gate Test ----");
-    in1 = 0; in2 = 0; #10;
-    in1 = 0; in2 = 1; #10;
-    in1 = 1; in2 = 0; #10;
-    in1 = 1; in2 = 1; #10;
+    in1 = 1'b0; in2 = 1'b0; #10;
+    in1 = 1'b0; in2 = 1'b1; #10;
+    in1 = 1'b1; in2 = 1'b0; #10;
+    in1 = 1'b1; in2 = 1'b1; #10;
+    in1 = 1'bx; in2 = 1'b0; #10;
+    in1 = 1'bz; in2 = 1'b0; #10;
+    in1 = 1'bx; in2 = 1'b1; #10;
+    in1 = 1'bz; in2 = 1'b1; #10;
     $finish;
   end
 
@@ -32,7 +36,7 @@ module nand_gate_tb;
   end
 endmodule
 
-//-----------------------Verify Xor gate-----------------------//
+//-----------------------Verify XOR gate-----------------------//
 module xor_gate_tb;
   reg in1, in2;
   wire out;
@@ -47,10 +51,14 @@ module xor_gate_tb;
   // Test stimulus
   initial begin
     $display("---- XOR Gate Test ----");
-    in1 = 0; in2 = 0; #10;
-    in1 = 0; in2 = 1; #10;
-    in1 = 1; in2 = 0; #10;
-    in1 = 1; in2 = 1; #10;
+    in1 = 1'b0; in2 = 1'b0; #10;
+    in1 = 1'b0; in2 = 1'b1; #10;
+    in1 = 1'b1; in2 = 1'b0; #10;
+    in1 = 1'b1; in2 = 1'b1; #10;
+    in1 = 1'bx; in2 = 1'b0; #10;
+    in1 = 1'bz; in2 = 1'b0; #10;
+    in1 = 1'bx; in2 = 1'b1; #10;
+    in1 = 1'bz; in2 = 1'b1; #10;
     $finish;
   end
 
@@ -69,16 +77,16 @@ endmodule
 
 //-----------------------------Verify mux4to1-----------------------------//
 module mux4to1_tb;
-  reg in0, in1, in2, in3;
+  reg in1, in2, in3, in4;
   reg [1:0] sel;
   wire out;
 
   // Instantiate the module
   mux4to1 uut (
-    .in0(in0),
     .in1(in1),
     .in2(in2),
     .in3(in3),
+    .in4(in4),
     .sel(sel),
     .out(out)
   );
@@ -86,10 +94,27 @@ module mux4to1_tb;
   // Test stimulus
   initial begin
     $display("---- 4:1 Multiplexer Test ----");
-    in0 = 0; in1 = 1; in2 = 0; in3 = 1; sel = 2'b00; #10;
-    in0 = 0; in1 = 1; in2 = 0; in3 = 1; sel = 2'b01; #10;
-    in0 = 0; in1 = 1; in2 = 0; in3 = 1; sel = 2'b10; #10;
-    in0 = 0; in1 = 1; in2 = 0; in3 = 1; sel = 2'b11; #10;
+        // Test all combinations of inputs and select lines
+        in1 = 1'b0; in2 = 1'b0; in3 = 1'b0; in4 = 1'b0; sel = 2'b00; #10; // Expect out = 0
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'b0; in4 = 1'b0; sel = 2'b00; #10; // Expect out = 1
+        in1 = 1'b0; in2 = 1'b1; in3 = 1'b0; in4 = 1'b0; sel = 2'b01; #10; // Expect out = 1
+        in1 = 1'b0; in2 = 1'b0; in3 = 1'b1; in4 = 1'b0; sel = 2'b10; #10; // Expect out = 1
+        in1 = 1'b0; in2 = 1'b0; in3 = 1'b0; in4 = 1'b1; sel = 2'b11; #10; // Expect out = 1
+
+        in1 = 1'b1; in2 = 1'b1; in3 = 1'b1; in4 = 1'b1; sel = 2'b00; #10; // Expect out = 1
+        in1 = 1'b1; in2 = 1'b1; in3 = 1'b1; in4 = 1'b1; sel = 2'b01; #10; // Expect out = 1
+        in1 = 1'b1; in2 = 1'b1; in3 = 1'b1; in4 = 1'b1; sel = 2'b10; #10; // Expect out = 1
+        in1 = 1'b1; in2 = 1'b1; in3 = 1'b1; in4 = 1'b1; sel = 2'b11; #10; // Expect out = 1
+
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'b0; in4 = 1'b1; sel = 2'b00; #10; // Expect out = 1
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'b0; in4 = 1'b1; sel = 2'b01; #10; // Expect out = 0
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'b0; in4 = 1'b1; sel = 2'b10; #10; // Expect out = 0
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'b0; in4 = 1'b1; sel = 2'b11; #10; // Expect out = 1
+
+        in1 = 1'bx; in2 = 1'b1; in3 = 1'bz; in4 = 1'b0; sel = 2'b00; #10; // Expect out = x
+        in1 = 1'bz; in2 = 1'b1; in3 = 1'bz; in4 = 1'b0; sel = 2'b01; #10; // Expect out = 1
+        in1 = 1'b1; in2 = 1'b0; in3 = 1'bx; in4 = 1'b1; sel = 2'b10; #10; // Expect out = x
+        in1 = 1'bx; in2 = 1'bz; in3 = 1'b0; in4 = 1'bz; sel = 2'b11; #10; // Expect out = z
     $finish;
   end
 
@@ -127,6 +152,11 @@ module comparator2bit_tb;
     in1 = 2'b01; in2 = 2'b00; #10;
     in1 = 2'b10; in2 = 2'b10; #10;
     in1 = 2'b11; in2 = 2'b01; #10;
+    in1 = 2'b0x; in2 = 2'b11; #10;
+    in1 = 2'b01; in2 = 2'b10; #10;
+    in1 = 2'bz0; in2 = 2'b11; #10;
+    in1 = 2'b11; in2 = 2'bx1; #10;
+    
     $finish;
   end
 
@@ -159,11 +189,17 @@ module decoder2to4_tb;
   // Test stimulus
   initial begin
     $display("---- 2:4 Decoder with Enable Test ----");
-    in1 = 0; in2 = 0; en = 1; #10;
-    in1 = 0; in2 = 1; en = 1; #10;
-    in1 = 1; in2 = 0; en = 1; #10;
-    in1 = 1; in2 = 1; en = 1; #10;
-    in1 = 0; in2 = 0; en = 0; #10;
+    in1 = 1'b0; in2 = 1'b0; en = 1'b1; #10;
+    in1 = 1'b0; in2 = 1'b1; en = 1'b1; #10;
+    in1 = 1'b1; in2 = 1'b0; en = 1'b1; #10;
+    in1 = 1'b1; in2 = 1'b1; en = 1'b1; #10;
+    in1 = 1'bx; in2 = 1'b1; en = 1'b1; #10;
+    in1 = 1'bx; in2 = 1'bz; en = 1'b1; #10;
+    in1 = 1'bx; in2 = 1'bx; en = 1'b1; #10;
+    in1 = 1'bz; in2 = 1'bz; en = 1'b1; #10;
+    in1 = 1'b0; in2 = 1'b1; en = 1'b0; #10;
+    in1 = 1'b1; in2 = 1'b0; en = 1'b0; #10; // Test enable
+    in1 = 1'b1; in2 = 1'b1; en = 1'b1; #10;
     $finish;
   end
 
@@ -178,7 +214,6 @@ module decoder2to4_tb;
     $dumpvars;
   end
 endmodule
-
 
 //--------------------------------------Verify Tristate Buffer--------------------------------------//
 module tristateBuffer_tb;
@@ -195,10 +230,18 @@ module tristateBuffer_tb;
   // Test stimulus
   initial begin
     $display("---- Tri-State Buffer Test ----");
-    data_in = 0; en = 1; #10;
-    data_in = 1; en = 1; #10;
-    data_in = 0; en = 0; #10;
-    data_in = 1; en = 0; #10;
+    data_in = 1'b0; en = 1'b1; #10;
+    data_in = 1'b1; en = 1'b1; #10;
+    data_in = 1'b0; en = 1'b0; #10;
+    data_in = 1'b1; en = 1'b0; #10;
+    data_in = 1'b0; en = 1'bx; #10;
+    data_in = 1'b1; en = 1'bx; #10;
+    data_in = 1'b0; en = 1'bz; #10;
+    data_in = 1'b1; en = 1'bz; #10;
+    data_in = 1'bx; en = 1'b0; #10;
+    data_in = 1'bz; en = 1'b0; #10;
+    data_in = 1'bx; en = 1'b1; #10;
+    data_in = 1'bz; en = 1'b1; #10;
     $finish;
   end
 

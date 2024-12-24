@@ -20,37 +20,38 @@
         // Test stimulus
         initial begin
             // Initial values
-            d = 0; en = 1; #10;  
-            result(expected_out);
-            d = 1; en = 0; #10;  
-            result(expected_out);
-            d = 1; en = 1; #10; 
-            result(expected_out);
-            d = 0; en = 1; #10; 
-            result(expected_out);
-            d = 1; en = 1; #10; 
-            result(expected_out);
-            d = 1; en = 0; #10; 
-            result(expected_out);
-            d = 0; en = 0; #10; 
-            result(expected_out);
-            d = 0; en = 1; #10;  
-            result(expected_out);
-            d = 1; en = 1; #10; 
-            result(expected_out);
-            d = 0; en = 0; #10;  
-            result(expected_out);
+            passed = 0;
+            failed = 0;
             
-            //Display the result of module
-            if(failed == 0) begin
-            $display("============");
-            $display("TEST PASSED");
-            $display("============");
-            end
-            else begin
-            $display("===============");
-            $display("TEST FAILED!!!");
-            $display("===============");
+            // Test Inputs
+            d = 1'b0; en = 1'b1; #10;  
+            d = 1'b1; en = 1'b0; #10;  
+            d = 1'b1; en = 1'b1; #10; 
+            d = 1'b0; en = 1'b1; #10; 
+            d = 1'b1; en = 1'b1; #10; 
+            d = 1'b1; en = 1'b0; #10; 
+            d = 1'b0; en = 1'b0; #10; 
+            d = 1'b0; en = 1'b1; #10;  
+            d = 1'bz; en = 1'b1; #10; 
+            d = 1'b0; en = 1'b0; #10;
+         	d = 1'b0; en = 1'b1; #10;  
+            d = 1'b1; en = 1'b1; #10; 
+            d = 1'b0; en = 1'b0; #10; 
+          	d = 1'bx; en = 1'b1; #10;  
+            d = 1'b1; en = 1'b1; #10; 
+            d = 1'b0; en = 1'b0; #10; 
+            
+            // Display the result of the module
+            if (failed == 0) begin
+                $display("============");
+                $display("ALL TESTS PASSED");
+                $display("============");
+            end else begin
+                $display("===============");
+                $display("TEST FAILED");
+                $display("Total Passed: %d", passed);
+                $display("Total Failed: %d", failed);
+                $display("===============");
             end
             
             $finish;  // End simulation
@@ -66,8 +67,7 @@
         // Checker
         task result(input expected_out);
             begin
-            if(expected_out == out) begin
-                $display("[TEST PASSED]");
+            if(expected_out === out) begin
                 passed = passed + 1;
             end
             else begin
@@ -79,6 +79,11 @@
 
         always @(*) begin
             if(en) expected_out = d;
+          	if(expected_out === 1'bz) expected_out = 1'bx;
+        end
+
+        always @(*) begin
+            result(expected_out);
         end
 
         // Generate waveform

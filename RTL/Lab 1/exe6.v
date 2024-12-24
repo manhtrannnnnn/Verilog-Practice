@@ -16,11 +16,11 @@ endmodule
 
 //-------------------------------4:1 multiplexer-------------------------------//
 module mux4to1(
-    input in0, in1, in2, in3,
-    input sel[1:0],
+    input in1, in2, in3, in4,
+    input [1:0] sel,
     output out
 );
-    assign out = sel[1] ? (sel[0] ? in3 : in2) : (sel[0] ? in1 : in0);
+    assign out = sel[1] ? (sel[0] ? in4 : in3) : (sel[0] ? in2 : in1);
 endmodule
 
 //-------------------------------2 bit Magnitude Comparator-------------------------------//
@@ -49,12 +49,13 @@ module decoder2to4 (
     assign data_out = (~en) ? 4'b0000 : 
                       (tmp == 2'b00) ? 4'b0001 :
                       (tmp == 2'b01) ? 4'b0010 :
-                      (tmp == 2'b10) ? 4'b0100 : 4'b1000;
+                      (tmp == 2'b10) ? 4'b0100 : 
+                      (tmp == 2'b11) ? 4'b1000 : 4'bx;
 endmodule
 
 //-------------------------------1 bit full adder-------------------------------//
 module fullader1bit(
-    input in1, in2, cin
+    input a, b, cin, 
     output sum,
     output overflow
 );
