@@ -26,7 +26,7 @@ module dflipflop_tb;
         passed = 0;
         failed = 0;
         asyn_clear = 0; asyn_preset = 0; data_in = 1; #5; // Test clear
-        asyn_clear = 1; data_in = 0; #10; // Testing change value when clock rising
+        asyn_clear = 1; data_in = 0; #10; // Testing change value
         data_in = 1; #10;
         data_in = 0; #10;
         data_in = 1; #10;

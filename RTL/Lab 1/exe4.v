@@ -1,22 +1,28 @@
 //--------------------------------T flipflop using Latches--------------------------------------//
-module T_flipflop (
-    input wire T,         
-    input wire clk,      
-    input wire async_set,
-    input wire async_clear, 
-    output reg Q         
+module sr_latch(
+    input in1, in2,
+    output q
 );
+    wire not_q;
+    nand u1(q, in1, not_q); // q = ~(in1 & (q'))
+    nand u2(not_q, q, in2); // q' = ~(in2 & (q))
+endmodule
 
-    wire D;
-    assign D = T ^ Q;
+module t_flip_flop(
+    input T, clk, async_set, async_clear,
+    output Q
+);
+    wire s, r;
 
-    // Asynchronous set and clear control
-    always @(posedge clk or posedge async_set or posedge async_clear) begin
-        if (async_set) 
-            Q <= 1;       
-        else if (async_clear)
-            Q <= 0;      
-        else
-            Q <= D;      
-    end
+    // Asynchronous Set and Clear Logic
+    assign s = async_set ? 1 : T & ~Q;
+    assign r = async_clear ? 1 : ~T & Q;
+
+    // Instantiate SR Latch
+    sr_latch sr (
+        .in1(s),
+        .in2(r),
+        .q(Q)
+    );
+
 endmodule

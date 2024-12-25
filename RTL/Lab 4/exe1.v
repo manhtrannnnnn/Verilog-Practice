@@ -2,7 +2,7 @@
 module detecting_nonverlapp(
     input clk, rst_n,
     input data_in,
-    output valid
+    output reg valid
 );
     localparam  Init = 5'b00001,
                 S1 = 5'b00010,
@@ -19,16 +19,14 @@ module detecting_nonverlapp(
         end 
         else begin
             currentState <= nextState;
+            if (currentState == S1011 && data_in == 0)
+                valid <= 1;
+            else
+                valid <= 0;
         end
     end
 
-    //Output Logic
-    wire out1;
-    assign out1 = data_in ? 0 : 1;
-    assign valid = (currentState == S1011) ? out1 : 0;
-
     //Next State Logic
-
     always @(*) begin
         case(currentState)
             Init: begin
@@ -61,7 +59,7 @@ endmodule
 module detecting_overlapp(
     input clk, rst_n,
     input data_in,
-    output valid
+    output reg valid
 );
     localparam  Init = 5'b00001,
                 S1 = 5'b00010,
@@ -78,13 +76,12 @@ module detecting_overlapp(
         end 
         else begin
             currentState <= nextState;
+            if (currentState == S1011 && data_in == 0)
+                valid <= 1;
+            else
+                valid <= 0;
         end
     end
-
-    //Output Logic
-    wire out1;
-    assign out1 = data_in ? 0 : 1;
-    assign valid = (currentState == S1011) ? out1 : 0;
 
     //Next State Logic
 

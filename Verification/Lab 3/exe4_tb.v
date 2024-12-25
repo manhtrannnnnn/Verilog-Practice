@@ -33,7 +33,7 @@ module comparator_tb();
         A = 3'b0xz; B = 3'b101; #10;
         A = 3'b1x1; B = 3'bz11; #10;
         A = 3'b1x1; B = 3'bz0x; #10;
-        A = 3'b10z; B = 3'b0z1; #10;
+        A = 3'b10z; B = 3'b0z; #10;
 
         $finish;
     end

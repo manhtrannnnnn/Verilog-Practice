@@ -1,10 +1,11 @@
-//--------------------------------------- Verify T Flip Flop---------------------------------------//
-module T_flipflop_tb;
-  reg T, clk, async_set, async_clear;
-  wire Q;
+module t_flip_flop_tb;
 
+  // Test Inputs
+  reg T, clk, async_set, async_clear;
+  // Test Outputs
+  wire Q;
   // Instantiate the T Flip-Flop module
-  T_flipflop dut (
+  t_flip_flop dut (
     .T(T),
     .clk(clk),
     .async_set(async_set),
@@ -21,7 +22,7 @@ module T_flipflop_tb;
   // Test stimulus
   initial begin
     // Initial values
-    T = 0; async_set = 0; async_clear = 0; #20;
+    T = 0; async_set = 0; async_clear = 0; #10;
 
     // Test asynchronous set
     async_set = 1; #10;
@@ -32,10 +33,10 @@ module T_flipflop_tb;
     async_clear = 0; #10;
 
     // Test toggling behavior
-    T = 1; #10; // Toggle on rising edge of clk
-    T = 0; #10; // No toggle
-    T = 1; #10; // Toggle again
-    T = 1; #10; // Toggle again
+    T = 1; #10;
+    T = 0; #10; 
+    T = 1; #10; 
+    T = 1; #10; 
 
     // Test behavior after asynchronous set
     async_set = 1; #10;
@@ -56,7 +57,7 @@ module T_flipflop_tb;
 
   // Generate waveform
   initial begin
-    $dumpfile("T_flipflop_tb.vcd");
+    $dumpfile("dump.vcd");
     $dumpvars;
   end
 endmodule

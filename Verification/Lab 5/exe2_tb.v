@@ -23,29 +23,40 @@
 
         // Test stimulus
         initial begin 
-            $display("----------Test Counter 4 bit");
+            $display("----------Test Counter 4 bit----------");
             asyn_reset = 0;
             syn_load = 0;
             en = 1;
             data_in = 4'b0000; #20;
+
           	// Test normal flow - roll over
+            $display("----------Test normal flow----------");
             asyn_reset = 1; #200;
+
           	// Test enable inactive
-          	en = 0; #40;
+            $display("----------Test inactive enable----------");
+          	en = 0; #50;
+
           	// Test enable active
-          	en =1; #30;
+            $display("----------Test active enable----------");
+          	en = 1; #50;
+
           	// Test asynchronous reset
+            $display("----------Test Asynchronous reset----------");
           	asyn_reset = 0; #30;
+
           	// Test synchronous load - valid value
+            $display("----------Test synchronous Load and Valid Value----------");
           	asyn_reset = 1;
          	syn_load = 1;
           	data_in = 4'b0010; #10;
           	syn_load = 0; #40;
+
           	// Test synchronous reset - invalid value
+            $display("----------Test synchronous Reset and Invalid Value----------");
           	syn_load = 1;
           	data_in = 4'b1010; #10;
           	syn_load = 0; #40;
-          	Q
             $finish;
         end
 
