@@ -1,5 +1,5 @@
 //-----------------------Design D-Latch with enable-----------------------//
-module d_latch(
+module dlatch(
     input en,
     input data_in,
     output reg data_out
@@ -14,20 +14,23 @@ module d_latch(
     end
 endmodule
 
-//-----------------------b.Design D-FF with synchronous reset and enable-----------------------//
-module d_flipflop(
-    input clk, rst_n, en
-    input data_in,
-    output reg data_out
+//-----------------------Design D-FF with synchronous reset and enable-----------------------//
+module dflipflop(
+    input clk,         
+    input rst_n,      
+    input en,         
+    input data_in,     
+    output reg data_out 
 );
     always @(posedge clk) begin
-        if(!rst_n) begin
-            data_out <= 0;
+        if (!rst_n) begin
+            data_out <= 1'b0; 
         end
-        else if(en) begin
+        else if (en) begin
             data_out <= data_in;
         end
     end
+
 endmodule
 
 //-----------------------MOD-5 counter with asynchronous reset and synchronous load-----------------------//
@@ -51,7 +54,7 @@ module mod5counter(
 endmodule
 
 //-----------------------7-bit PIPO shift register with asynchronus reset and synchronous load.-----------------------//
-module pipo_shiftregister #(
+module pipo_shiftregister7bit #(
     parameter N = 7 
 )(
     input clk, rst_n, load,
@@ -73,22 +76,22 @@ endmodule
 module piso_shiftregister #(
     parameter N = 6  
 )(
-    input clk, rst_n, load, enable,
-    input [N-1:0] parallel_in,
-    output reg serial_out
+    input clk, rst_n, load, en,
+    input [N-1:0] data_in,
+    output reg data_out
 );
     reg [N-1:0] shift_reg;  
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            shift_reg <= 0;        
-            serial_out <= 0;      
+            shift_reg <= 6'b0;        
+            data_out <= 0;      
         end
         else if (load) begin
-            shift_reg <= parallel_in;  
+            shift_reg <= data_in;  
         end
-        else if (enable) begin
-            serial_out <= shift_reg[0];  
+        else if (en) begin
+            data_out <= shift_reg[0];  
             shift_reg <= shift_reg >> 1; 
         end
     end
@@ -137,12 +140,12 @@ module fifo#(
     output empty, full,
     output reg [Width-1:0] data_out
 );
-    localparam size = $clog(Depth) ;
+    localparam size = $clog2(Depth) ;
     reg [Width-1:0] mem [0:Depth-1];
     reg [size:0] wr_ptr, rd_ptr;
 
     //Reset status
-  always @(posedge clk or negedge rst_n) begin
+    always @(posedge clk or negedge rst_n) begin
         if(!rst_n) begin
             data_out <= 0;
             wr_ptr <= 0;
@@ -183,7 +186,7 @@ module detect_overlapping(
                S10 = 6'b000100,
                S101 = 6'b001000,
                S1011 = 6'b010000,
-               S10110 = 6'1000000;
+               S10110 = 6'b100000;
 
     reg [5:0] currentState, nextState;
 
@@ -318,8 +321,6 @@ module traffic_light(
                         (currentState == GREEN) ? 2'b10 :
                         (currentState == GREEN_YELLOW) ? 2'b11 : 2'bz;
 
-    
-
     always @(posedge clk) begin
         if(!rst_n) begin
             currentState <= RED;
@@ -328,10 +329,10 @@ module traffic_light(
         else if(count == 0) begin
             currentState <= nextState;
             case(nextState)  
-                RED: count <= 25;
-                RED_YELLOW: count <= 2;
-                GREEN: count <= 15;
-                GREEN_YELLOW: count <= 2;
+                RED: count <= 5'd25;
+                RED_YELLOW: count <= 5'd2;
+                GREEN: count <= 5'd15;
+                GREEN_YELLOW: count <= 5'd2;
             endcase
         end
         else begin

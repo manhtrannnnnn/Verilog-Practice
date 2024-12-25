@@ -10,7 +10,8 @@ module decoder2to4 (
     assign data_out = ~en ? 4'b0000 : 
                       (tmp == 2'b00) ? 4'b0001 :
                       (tmp == 2'b01) ? 4'b0010 :
-                      (tmp == 2'b10) ? 4'b0100 : 4'b1000;
+                      (tmp == 2'b10) ? 4'b0100 : 
+                      (tmp == 2'b11) ? 4'b1000 : 4'bx;
 endmodule
 
 

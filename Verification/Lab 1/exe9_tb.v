@@ -21,6 +21,7 @@
             passed = 0;
             failed = 0;
             $display("----------Test Decoder 3 to 8----------");
+            // Test Normal Data
            	data_in = 3'b000; #10;
             data_in = 3'b001; #10;
             data_in = 3'b010; #10;
@@ -36,15 +37,25 @@
             data_in = 3'b101; #10;
             data_in = 3'b111; #10;
 
-            //Display the result of module
-            if(failed == 0) begin
+            // Test x, y data
+            data_in = 3'bzx1; #10;
+            data_in = 3'bx0z; #10;
+            data_in = 3'bxxz; #10;
+            data_in = 3'bx1z; #10;
+            data_in = 3'bxxx; #10;
+            data_in = 3'bzzz; #10;
+
+
+            // Display the result of the module
+            if (failed == 0) begin
                 $display("============");
-                $display("TEST PASSED");
+                $display("ALL TESTS PASSED");
                 $display("============");
-            end
-            else begin
+            end else begin
                 $display("===============");
-                $display("TEST FAILED!!!");
+                $display("TEST FAILED");
+                $display("Total Passed: %d", passed);
+                $display("Total Failed: %d", failed);
                 $display("===============");
             end
         end
@@ -52,7 +63,7 @@
         // Compare the result
         task result(input [7:0] expected_dataout);
             begin
-                if(expected_dataout == data_out) begin
+              	if(expected_dataout === data_out) begin
                     $display("TEST PASSED");
                     passed = passed + 1;
                 end
@@ -72,12 +83,13 @@
             else if (data_in == 5) expected_dataout = 32;
             else if (data_in == 6) expected_dataout = 64;
             else if (data_in == 7) expected_dataout = 128;
+            else expected_dataout = 8'bx;
             result(expected_dataout);
         end
 
         //Monitor the output signals
         initial begin
-          $monitor("[Time: %0t] data_in: %b || data_out: %b || expected data_out: %b", data_in, data_out, expected_dataout);
+          $monitor("[Time: %0t] data_in: %b || data_out: %b || expected data_out: %b", $time, data_in, data_out, expected_dataout);
         end
 
         // Generate Waveform
