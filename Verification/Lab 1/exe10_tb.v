@@ -369,7 +369,7 @@ module RAM_tb;
         // Initialize signals
         wr_en = 1'b0; rd_en = 1'b0; wr_addr = 1'b0; rd_addr = 1'b0; data_in = 4'b0; #10; 
         // Test 1: Write data to memory
-        $display("----------Test Write to memory");
+        $display("----------Test Write to memory----------");
         wr_en = 1; 
       	wr_addr = 4'h0; data_in = 4'b0001; #10; // Write to address 0
         wr_addr = 4'h1; data_in = 4'b1000; #10;	// Write to address 1          
@@ -388,7 +388,7 @@ module RAM_tb;
         
 
         // Test 2: Read data from memory
-        $display("----------Test Read from memory");
+        $display("----------Test Read from memory----------");
         wr_en = 0; rd_en = 1; 
       	rd_addr = 4'h0; #10; 		        // Read from address 0
         rd_addr = 4'h1; #10;            // Read from address 1

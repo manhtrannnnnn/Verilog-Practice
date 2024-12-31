@@ -12,10 +12,10 @@ module chirpcounter(
             tmp <= 4'b1111;
             count <= 4'b1111;
         end
-        else if(count == 0) begin
+        else if(count == 1'b0) begin
             out <= ~out;
-            count <= tmp - 1;
-            tmp <= tmp - 1;
+            count <= tmp - 1'b1;
+            tmp <= tmp - 1'b1;
         end
         else begin
             count <= count - 1;

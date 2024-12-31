@@ -13,4 +13,5 @@ module decoder2to4(
     and(out1, not_a, b, en);
     and(out2, a, not_b, en);
     and(out3, a, b, en);
+    
 endmodule

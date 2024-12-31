@@ -8,6 +8,7 @@ module mux2to1 (
     wire not_sel;
 
   // Gate level || out = a & (~sel) + b & sel;
+  
   	not not1(not_sel, sel);
   	and a1(out1,a,not_sel);
     and a2(out2,b,sel);

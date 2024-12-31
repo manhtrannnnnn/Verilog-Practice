@@ -20,7 +20,7 @@ module flowcontrol_tb;
     initial begin
         $display("----------Test Flow Control----------");
         data_in = 8'hAB; valid_in = 1'b0; asyn_rst = 0; #10;
-        data_in = 8'hAB; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'hxxab
+        data_in = 8'hAB; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'h00ab
       	// Test inactive valid_in
         data_in = 8'h43; valid_in = 1'b0; asyn_rst = 1; #10;	
         data_in = 8'hCD; valid_in = 1'b1; asyn_rst = 1; #10;	// Expected data out = 16'habcd

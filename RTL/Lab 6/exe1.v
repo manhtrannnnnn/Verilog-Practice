@@ -29,7 +29,7 @@ module parity_generator(
                 shift_tmp <= {shift_tmp[6:0], data_in};
                 count <= count + 1;
                 parity <= parity ^ data_in;
-                valid <= 1'b0;
+                valid_out <= 1'b0;
             end
         end
         else begin

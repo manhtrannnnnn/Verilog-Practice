@@ -1,32 +1,28 @@
-//-----------------------------------------------Design 16 x 16 bidirectional memory-----------------------------------------------//
-module bidirectional_memory(
+module bidirectional_memory (
     input clk,
-    input wr_en, rd_en,
+    input wr_en,
+    input rd_en,
     input [3:0] addr,
-    input [15:0] data_in,
-    output reg [15:0] data_out
+    inout [15:0] bus
 );
-    // Declare Memory
+    // Internal memory array
     reg [15:0] mem [0:15];
-    wire [15:0] bus; 
+
+    // Internal data wire for connecting to bus
+    wire [15:0] data_out;
+
+    // Read from memory
+    assign data_out = rd_en ? mem[addr] : 16'hZZZZ;
+  	generate
+      genvar i;
+      for(i = 0;i < 16; i++) begin
+        bufif1 buffer0(bus[i], data_out[i], rd_en);
+      end
+    endgenerate
 
     // Write to memory
     always @(posedge clk) begin
-        if(wr_en) begin
-            mem[addr] <= data_in;
-        end    
+        if (wr_en)
+            mem[addr] <= bus;
     end
-
-    // Read frome memory
-    generate 
-        genvar i;
-        for(i = 0; i < 16; i++) begin
-            bufif1(bus[i],mem[addr][i],rd_en); // Tristate for output
-        end
-    endgenerate
-
-    always @(posedge clk) begin
-        data_out <= bus;
-    end
-
 endmodule

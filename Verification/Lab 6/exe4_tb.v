@@ -13,13 +13,16 @@ module chirpcounter_tb;
 
     // Test stimulus 
     initial begin
-        asyn_rst = 0;
-        #10;
-        asyn_rst = 1;
-        #2500;
-        asyn_rst = 0;
-        #30;
-        asyn_rst = 1;
+        // Initialize the data
+        asyn_rst = 0; #10;
+        // Test Normal Flow
+        $display("---------Test Normal Flow---------");
+        asyn_rst = 1; #2500;
+        // Test Asynchronous reset
+        $display("---------Test Asynchronous Reset---------");
+        asyn_rst = 0; #30;
+        asyn_rst = 1; #100;
+
         #1000;
         $finish;
     end

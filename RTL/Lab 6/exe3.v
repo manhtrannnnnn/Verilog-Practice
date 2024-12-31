@@ -12,6 +12,7 @@ module flowcontrol(
         if(!asyn_rst) begin
             valid_out <= 0;
             data_out <= 16'b0;
+            previous_data <= 8'b0;
         end
         else begin
             if(valid_in) begin

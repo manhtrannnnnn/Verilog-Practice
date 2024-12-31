@@ -132,7 +132,7 @@ module fulladder_nbit_tb;
   // Monitor the output signals
   initial begin
     $monitor("Time: %0t | A: %b, B: %b | sum: %b, overflow: %b", $time, a, b, sum, overflow);
-    assign {expected_overflow, expected_sum} =	a + b; // Checker function
+    
   end
   
   task result(input expected_sum, expected_overflow);
@@ -147,6 +147,13 @@ module fulladder_nbit_tb;
       end
     end
   endtask
+
+  assign {expected_overflow, expected_sum} =	a + b; // Checker function
+
+  always @(*) begin
+    #1ns;
+    result(expected_sum, expected_overflow);
+  end
   
   // Generate Waveform
   initial begin

@@ -1,7 +1,7 @@
 //-------------------------------Verify Sequential Multiplier-------------------------------//
 module sequential_multiplier_tb;
     reg clk;
-    reg reset;
+    reg asyn_rst;
     reg load;
     reg [7:0] a;
     reg [7:0] b;
@@ -11,7 +11,7 @@ module sequential_multiplier_tb;
     // Instantiate the module
     sequential_multiplier uut (
         .clk(clk),
-        .reset(reset),
+        .asyn_rst(asyn_rst),
         .load(load),
         .a(a),
         .b(b),
@@ -19,50 +19,68 @@ module sequential_multiplier_tb;
         .valid(valid)
     );
 
-    // Clock generation
-    initial begin
-        clk = 0;
-        forever #5 clk = ~clk; // 10 time units period
-    end
-
-    // Testbench logic
+    // Test Stimulus
     initial begin
         integer i, j;
-        $monitor("Time: %0t | Reset: %b | Load: %b | A: %d | B: %d | Product: %d | Valid: %b",
-                 $time, reset, load, a, b, product, valid);
+        // Initialize the data
+        asyn_rst = 1'b0; load = 1'b0; a = 8'b0; b = 8'b0; #10;
 
-        // Test stimulus
-        reset = 1; load = 0; a = 0; b = 0;
-        #10 reset = 0;
+        // Test Normal data
+        $display("----------Test Normal Data----------");
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1011_0111; b = 8'b1100_0101; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1001_0101; b = 8'b0110_0111; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1101_0001; b = 8'b0111_0101; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1101_0111; b = 8'b1110_0001; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1111_0101; b = 8'b1110_1111; #10;
+        load = 1'b0; #80;
 
-        // Test multiple cases
-        for (i = 0; i < 8; i = i + 1) begin
-            for (j = 0; j < 8; j = j + 1) begin
-                // Apply inputs
-                load = 1;
-                a = i;
-                b = j;
-                #10 load = 0;
+        // Test x, y value
+        $display("-----------Test x, y Value----------");
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1xz1_0x11; b = 8'b11zz_0101; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1xz1_0101; b = 8'b0zx0_01zx; #10;
+        load = 1'b0; #80;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1101_0001; b = 8'b0111_0zx1; #10;
+        load = 1'b0; #80;
+        
+        // Test Load data while executing
+        $display("-----------Test Load Data----------");
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1011_0111; b = 8'b1100_0101; #10;
+        load = 1'b0; #20;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1001_0101; b = 8'b0110_0111; #10;
+        load = 1'b0; #80;
 
-                // Wait for multiplication to complete
-                wait(valid);
-                #10;
-
-                // Verify result
-                if (product !== (a * b)) begin
-                    $display("ERROR: A=%d, B=%d, Expected=%d, Got=%d", a, b, (a * b), product);
-                end else begin
-                    $display("SUCCESS: A=%d, B=%d, Product=%d", a, b, product);
-                end
-            end
-        end
-
+        // Test Asynchronous Reset
+        $display("-----------Test Asynchronous Reset----------");
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1011_0111; b = 8'b1100_0101; #10;
+        load = 1'b0; #10;
+        asyn_rst = 1'b0; #50;
+        asyn_rst = 1'b1; load = 1'b1; a = 8'b1001_0101; b = 8'b0110_0111; #10;
+        load = 1'b0; #80;
         $finish;
+    end
+
+    // Display the result
+    initial begin
+        forever begin
+            $display("Time: %0t | Reset: %b | Load: %b | A: %d | B: %d | Product: %d | Valid: %b", $time, reset, load, a, b, product, valid);
+        end
+    end
+    
+  
+	// Generate Clock
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; 
     end
 
     // Generate waveform
     initial begin
-      $dumpfile("dump.vcd");
+        $dumpfile("dump.vcd");
         $dumpvars;
     end
 endmodule

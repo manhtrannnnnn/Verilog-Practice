@@ -12,7 +12,7 @@ endmodule
 
 module fulladder_nbit #(
     parameter N = 4
-)(
+)( 
     input [N-1:0] a, b, 
     output [N-1:0] sum,
     output overflow
@@ -57,8 +57,9 @@ module gate_adder (
 
     // cout = (a & b) | (b & cin) | (cin & a) 
     wire out1, out2, out3;
-    and a1(out1, a, b);
-    and a2(out2, b, cin);
+
+    and a1(out1, a, b); // out1 = a & b
+    and a2(out2, b, cin);// out2 = b & cin
     and a3(out3, a, cin);
     or  o1(cout, out1, out2, out3);
 

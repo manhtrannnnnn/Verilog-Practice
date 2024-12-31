@@ -59,8 +59,9 @@ module fullader1bit(
     output sum,
     output overflow
 );
-    assign overflow = (a ^ b & cin) | (a & b);
     assign sum = a ^ b ^ cin;
+    assign overflow = (a ^ b & cin) | (a & b);
+    
 endmodule
 
 //-------------------------------Tri-State buffer-------------------------------//

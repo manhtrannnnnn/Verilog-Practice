@@ -87,12 +87,15 @@ module piso_shiftregister #(
             shift_reg <= 6'b0;        
             data_out <= 0;      
         end
-        else if (load) begin
-            shift_reg <= data_in;  
-        end
-        else if (en) begin
-            data_out <= shift_reg[0];  
-            shift_reg <= shift_reg >> 1; 
+        else begin
+            if (load) begin
+                shift_reg <= data_in;  
+            end
+            
+            if(en) begin
+                data_out <= shift_reg[0];  
+                shift_reg <= shift_reg >> 1; 
+            end
         end
     end
 endmodule
